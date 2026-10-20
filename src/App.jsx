@@ -52,11 +52,11 @@ function App() {
     if (existing) {
       if (existing.cartQuantity < med.stock) {
         setCart(cart.map(item => item._id === med._id ? { ...item, cartQuantity: item.cartQuantity + 1 } : item))
-        showNotification(`${med.name} cart mein add ho gayi!`, 'success')
-      } else { showNotification("Stock khatam hai!", 'error') }
+        showNotification(`${med.name} Add to cart!`, 'success')
+      } else { showNotification("out of stack", 'error') }
     } else {
       setCart([...cart, { ...med, cartQuantity: 1 }])
-      showNotification(`${med.name} cart mein add ho gayi!`, 'success')
+      showNotification(`${med.name} ADD to card!`, 'success')
     }
   }
 
@@ -77,7 +77,7 @@ function App() {
 
   const handleCheckout = async (e) => {
     e.preventDefault()
-    if (cart.length === 0) return showNotification("Cart khali hai!", 'error')
+    if (cart.length === 0) return showNotification("Cart is empty", 'error')
     if (checkoutData.paymentMethod === 'JazzCash' && checkoutData.transactionId.length < 11) {
         return showNotification("Sahi JazzCash TID darj karein!", 'error')
     }
@@ -120,7 +120,7 @@ function App() {
       setCurrentView('adminDashboard')
       loadOrders()
       showNotification("Welcome Admin!", 'success')
-    } else { showNotification("Galat Email ya Password!", 'error') }
+    } else { showNotification("invalid Email or Password!", 'error') }
   }
 
   const updateOrderStatus = async (id, newStatus) => {
@@ -134,7 +134,7 @@ function App() {
 
   const sendWhatsApp = (order) => {
     const itemNames = order.items.map(i => `${i.name} (x${i.cartQuantity})`).join(', ');
-    let msg = `Assalam o Alaikum ${order.customerName}!\n\nPharmaCare Order Details:\n📦 Status: *${order.status}*\n💊 Medicines: ${itemNames}\n💰 Total Bill: Rs ${order.totalBill}\n\nShukriya!`;
+    let msg = `Assalam o Alaikum ${order.customerName }!\n\nPharmaCare Order Details:\n📦 Status: *${order.status}*\n💊 Medicines: ${itemNames}\n💰 Total Bill: Rs ${order.totalBill}\n\nThankyou for choosing pharmacare!`;
     let phone = order.phone.replace(/\D/g, ''); 
     if(phone.startsWith('0')) { phone = '92' + phone.substring(1); }
     window.location.href = `whatsapp://send?phone=${phone}&text=${encodeURIComponent(msg)}`;
@@ -291,7 +291,7 @@ function App() {
           <div>
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-8 rounded-3xl shadow-xl mb-10 text-center relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent_50%)]"></div>
-              <h2 className="text-3xl md:text-4xl font-black tracking-tight">Online Pharmacy & Healthcare Store</h2>
+              <h2 className="text-3xl md:text-4xl font-black tracking-tight">PharmaCare & Healthcare Mart</h2>
               <p className="text-blue-100 mt-2 font-medium">Genuine Medicines & First Aid Delivered Fast • Free Delivery over Rs 1500</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
@@ -378,7 +378,7 @@ function App() {
                       <h4 className="font-black text-rose-700 mb-1 flex items-center gap-2 text-sm">📱 JazzCash Gateway</h4>
                       <p className="text-xs text-gray-600 mb-2">Send <b>Rs {cartTotal}</b> to Account:</p>
                       <div className="bg-white p-2.5 rounded-xl text-center mb-3 border border-rose-100 shadow-sm">
-                        <span className="text-xl tracking-widest font-black text-gray-900">03045518658</span>
+                        <span className="text-xl tracking-widest font-black text-gray-900">03095518882</span>
                       </div>
                       <label className="block text-[11px] font-bold text-gray-700 uppercase mb-1">12-Digit TID Number *</label>
                       <input type="text" required placeholder="e.g. 012345678912" onChange={(e) => setCheckoutData({...checkoutData, transactionId: e.target.value})} className="w-full border border-rose-200 p-2.5 rounded-xl outline-none bg-white text-center font-mono tracking-widest text-sm" />
